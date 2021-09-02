@@ -37,23 +37,32 @@ div {
 
 #calc-display {
   display: flex;
-  justify-content: center;
-  align-items: center;
-  margin: auto;
-  margin-top: 20px;
-  width: 420px;
+  position:inherit;
+  justify-self: stretch;
+  align-self: stretch;
+  margin: 20px;
+  width: inherit;
   height: 100px;
   background: var(--primary-light);
 }
 
-#calc-buttons {
-  display: flex;
-  justify-content: center;
+#buttons-cont {
+  display: grid;
+  justify-self: stretch;
   align-self: stretch;
-  margin: auto;
-  margin-top: 20px;
-  margin-bottom: 20px;
-  width: 420px;
+  margin: 50px;
+  width: inherit;
   height: inherit;
   background: var(--primary-light);
+}
+
+.button-item {
+  display: inline-table;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin: 10px;
+  width: 100%;
+  height: 100%;
+  background: var(--primary-dark);
 }
