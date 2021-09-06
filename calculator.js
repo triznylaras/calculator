@@ -1,3 +1,4 @@
+var display = document.getElementById("calc-display")
 var buttonsCont = document.getElementById("buttons-cont");
 
 function add(a, b) {
@@ -17,5 +18,7 @@ function divide(a, b) {
 }
 
 function operate(a, b) {
-  divide(a, b)
+  a = Number(a)
+  b = Number(b)
+  
 }
