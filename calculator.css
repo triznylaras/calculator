@@ -1,6 +1,7 @@
 :root {
   --primary-light: #ddd;
   --primary-dark: #333;
+  --btn-active: #ccc;
 }
 
 body {
@@ -41,10 +42,12 @@ div {
   justify-self: stretch;
   align-self: stretch;
   margin: auto;
+  padding: 5px;
   margin-top: 30px;
   width: inherit;
   height: 100px;
-  font-size: 20px;
+  font-size: 30px;
+  text-align: left;
   background: var(--primary-light);
 }
 
@@ -64,6 +67,10 @@ div {
   font-size: 20px;
   border-radius: 10px;
   border-color: var(--primary-dark);
+}
+
+.btn:active {
+  background-color: var(--btn-active);
 }
 
 .btn-yellow {
