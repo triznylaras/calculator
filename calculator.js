@@ -24,6 +24,7 @@ button.addEventListener('click', () => setOperation(button.textContent))
 
 equalsButton.addEventListener('click', calculate)
 clearButton.addEventListener('click', clear)
+deleteButton.addEventListener('click', deleteOperation)
 
 function appendNumber(number) {
   if (firstDisplay.textContent === '0' || shouldResetScreen) resetScreen()
@@ -41,6 +42,10 @@ function clear() {
   firstOperand = ''
   secondOperand = ''
   currentOperation = null
+}
+
+function deleteOperation() {
+  firstDisplay.textContent = firstDisplay.textContent.slice(0, -1)
 }
 
 function setOperation(operator) {
