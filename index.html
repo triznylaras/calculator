@@ -8,7 +8,10 @@
     <h1>Calculator</h1>
     <main>
       <div id="calculator">
-        <div id="calc-display"></div>
+        <div id="calc-display">
+          <div id="first-display">0</div>
+          <div id="second-display"></div>
+        </div>
         <div id="buttons-cont">
           <button class="btn btn-yellow span-2" id="clear-btn">C</button>
           <button class="btn btn-gray span-2" id="delete-btn">Delete</button>
@@ -28,9 +31,9 @@
           <button class="btn" data-number>3</button>
           <button class="btn" data-operator>-</button>
 
-          <button class="btn" data-operator>.</button>
+          <button class="btn" data-operator id="point-btn">.</button>
           <button class="btn" data-number>0</button>
-          <button class="btn" data-operator>=</button>
+          <button class="btn" data-operator id="equals-btn">=</button>
           <button class="btn" data-operator>+</button>
         </div>
       </div>
