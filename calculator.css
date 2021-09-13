@@ -37,31 +37,23 @@ div {
 }
 
 #calc-display {
-  display: grid;
-  justify-self: stretch;
-  align-self: stretch;
-  margin: auto;
   padding: 10px;
-  margin-top: 30px;
-  width: inherit;
-  height: 100px;
-  background: var(--primary-light);
+  margin: 28px;
+  word-wrap: break-word;
+  word-break: break-all;
+  background-color: var(--primary-light);
 }
 
 #first-display {
   display: inline-flexbox;
-  background-color: lightblue;
-  width: inherit;
-  height: auto;
+  min-height: 60px;
   text-align: right;
   font-size: 30px;
 }
 
 #second-display {
   display: inline-flexbox;
-  background-color: lightpink;
-  width: inherit;
-  height: auto;
+  min-height: 25px;
   text-align: right;
   font-size: 15px;
 }

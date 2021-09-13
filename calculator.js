@@ -1,7 +1,11 @@
 let currentOperation = null
+let currentCalculation = null
 let shouldResetScreen = false
 let firstOperand = ''
 let secondOperand = ''
+let displayValue = ''
+let operatorData = Array()
+let numberData = Array()
 
 var display = document.getElementById("calc-display")
 var firstDisplay = document.getElementById("first-display")
@@ -19,52 +23,91 @@ button.addEventListener('click', () => appendNumber(button.textContent))
 )
 
 operatorButtons.forEach((button) =>
-button.addEventListener('click', () => setOperation(button.textContent))
+button.addEventListener('click', () => appendOperator(button.textContent))
 )
 
-equalsButton.addEventListener('click', calculate)
+firstDisplay.addEventListener('change', calculateChanges)
+
 clearButton.addEventListener('click', clear)
 deleteButton.addEventListener('click', deleteOperation)
+equalsButton.addEventListener('click', calculate)
+
+for (let i=0; i<operatorButtons.length; i++) {
+  operatorData.push(operatorButtons[i].innerHTML)
+}
+
+for (let i=0; i<numberButtons.length; i++) {
+  numberData.push(numberButtons[i].innerHTML)
+}
+
+function calculateChanges() {
+  if (displayValue !== '' && currentOperation !== null) {
+    if (displayValue.includes(currentOperation)) {
+      var splitOperation = displayValue.split(currentOperation)
+      if (splitOperation.length == 2) {
+        firstOperand = splitOperation[0]
+        secondOperand = splitOperation[1]
+        secondDisplay.textContent = operate(currentOperation, firstOperand, secondOperand)
+      }
+    }
+    currentOperation = null
+    firstOperand = secondDisplay.textContent
+  }
+}
 
 function appendNumber(number) {
   if (firstDisplay.textContent === '0' || shouldResetScreen) resetScreen()
-  firstDisplay.textContent += number
+  displayValue = firstDisplay.textContent += number
+}
+
+function appendOperator(operator) {
+  if (displayValue === '') return
+  if (displayValue === '' && operator === "=") return
+  if (displayValue.charAt(displayValue.length-1) === operatorData.values) {
+    displayValue.slice(0, -1)
+    displayValue = displayValue + operator
+  }
+  firstDisplay.textContent = displayValue + operator
+  currentOperation = operator
 }
 
 function resetScreen() {
   firstDisplay.textContent = ''
   shouldResetScreen = false
-}
+} 
 
 function clear() {
   firstDisplay.textContent = '0'
   secondDisplay.textContent = ''
   firstOperand = ''
   secondOperand = ''
+  displayValue = ''
   currentOperation = null
 }
 
 function deleteOperation() {
   firstDisplay.textContent = firstDisplay.textContent.slice(0, -1)
-}
-
-function setOperation(operator) {
-  if (currentOperation !== null) calculate()
-  firstOperand = firstDisplay.textContent
-  currentOperation = operator
-  firstDisplay.textContent = `${firstOperand}${currentOperation}`
-  shouldResetScreen = true
+  displayValue = firstDisplay.textContent
 }
 
 function calculate() {
-  if (currentOperation === null || shouldResetScreen) return
-  if (currentOperation === '÷' && firstDisplay.textContent === '0') {
-    alert("You can't divide by 0!")
-    return
+  // if (currentOperation === null || shouldResetScreen) return
+  // if (currentOperation === '÷' && firstDisplay.textContent === '0') {
+  //   alert("You can't divide by 0!")
+  //   return
+  // }
+  // secondDisplay.textContent = operate(currentOperation, firstOperand, secondOperand)
+  // firstDisplay.textContent = `${firstOperand}${currentOperation}${secondOperand}`
+  // currentOperation = null
+  currentCalculation = firstDisplay.textContent
+  if (currentCalculation !== null) {
+    if  (currentOperation !== null) {
+      firstOperand = currentCalculation.split(currentOperation)[0]
+      secondOperand = currentCalculation.split(currentOperation)[1]
+      secondDisplay.textContent = operate(currentOperation, firstOperand, secondOperand)
+    }
   }
-  secondOperand = firstDisplay.textContent
-  secondDisplay.textContent = operate(currentOperation, firstOperand, secondOperand)
-  firstDisplay.textContent = `${firstOperand}${currentOperation}${secondOperand}`
+  firstOperand = secondDisplay.textContent
   currentOperation = null
 }
 
