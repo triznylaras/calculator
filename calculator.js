@@ -1,5 +1,6 @@
 let currentOperation = null
 let currentCalculation = null
+let minusSign = null
 let shouldResetScreen = false
 let firstOperand = ""
 let secondOperand = ""
@@ -47,10 +48,20 @@ function appendNumber(number) {
 
 function appendOperator(operator) {
   if (currentOperation !== null) calculate()
-  firstOperand = secondDisplay.textContent
-  currentOperation = operator
-  firstDisplay.textContent = `${firstOperand} ${currentOperation}`
-  shouldResetScreen = true
+  if (currentOperation === '÷' || currentOperation === 'x') {
+    if (operator === '-') {
+      minusSign = operator
+      firstOperand = secondDisplay.textContent
+      firstDisplay.textContent = `${firstOperand} ${currentOperation} ${operator}`
+      secondDisplay.textContent = `${minusSign}`
+      shouldResetScreen = false
+    }
+  } else {
+    firstOperand = secondDisplay.textContent
+    currentOperation = operator
+    firstDisplay.textContent = `${firstOperand} ${currentOperation}`
+    shouldResetScreen = true
+  }
 }
 
 function resetScreen() {
