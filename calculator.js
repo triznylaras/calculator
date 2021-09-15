@@ -28,6 +28,7 @@ button.addEventListener('click', () => appendOperator(button.textContent))
 clearButton.addEventListener('click', clear)
 deleteButton.addEventListener('click', deleteOperation)
 equalsButton.addEventListener('click', calculate)
+pointButton.addEventListener('click', appendPoint)
 
 /** to populate operator data */
 for (let i=0; i<operatorButtons.length; i++) {
@@ -79,6 +80,15 @@ function calculate() {
   secondDisplay.textContent = operate(currentOperation, firstOperand, secondOperand)
   firstDisplay.textContent = `${firstOperand} ${currentOperation} ${secondOperand} =`
   currentOperation = null
+}
+
+
+function appendPoint() {
+  if (shouldResetScreen) resetScreen()
+  if (secondDisplay.textContent === '')
+    secondDisplay.textContent = '0'
+  if (secondDisplay.textContent.includes('.')) return
+  secondDisplay.textContent += '.'
 }
 
 function add(a, b) {
