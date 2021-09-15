@@ -1,9 +1,9 @@
 let currentOperation = null
 let currentCalculation = null
 let shouldResetScreen = false
-let firstOperand = ''
-let secondOperand = ''
-let displayValue = ''
+let firstOperand = ""
+let secondOperand = ""
+let displayValue = ""
 let operatorData = Array()
 let numberData = Array()
 
@@ -26,7 +26,22 @@ operatorButtons.forEach((button) =>
 button.addEventListener('click', () => appendOperator(button.textContent))
 )
 
-firstDisplay.addEventListener('change', calculateChanges)
+// firstDisplay.addEventListener("DOMCharacterDataModified", calculateChanges)
+
+var observer = new MutationObserver(function(mutations) {
+  mutations.forEach(function(mutation) {
+    displayValue = mutation.target.innerHTML
+    if (!displayValue.indexOf(operatorData) > 1) {
+      calculateChanges()
+    } else {
+      displayValue = firstOperand + currentOperation
+      calculateChanges()
+    }
+  })
+})
+
+var config = { attributes: true, childList: true, characterData: true }
+observer.observe(firstDisplay, config)
 
 clearButton.addEventListener('click', clear)
 deleteButton.addEventListener('click', deleteOperation)
@@ -41,34 +56,51 @@ for (let i=0; i<numberButtons.length; i++) {
 }
 
 function calculateChanges() {
-  if (displayValue !== '' && currentOperation !== null) {
-    if (displayValue.includes(currentOperation)) {
-      var splitOperation = displayValue.split(currentOperation)
-      if (splitOperation.length == 2) {
-        firstOperand = splitOperation[0]
-        secondOperand = splitOperation[1]
-        secondDisplay.textContent = operate(currentOperation, firstOperand, secondOperand)
-      }
-    }
+  var splitOperation = displayValue.split(currentOperation)
+  secondOperand = splitOperation[1]
+  if (firstOperand === "" || firstOperand === null) {
+    firstOperand = splitOperation[0]
+  } else {
+    secondDisplay.textContent = ""
+    displayValue = firstOperand + currentOperation
+    firstDisplay.textContent = displayValue + secondOperand
+  }
+  if (secondOperand !== "" || secondOperand !== null) {
+    secondDisplay.textContent = operate(currentOperation, firstOperand, secondOperand)
     currentOperation = null
     firstOperand = secondDisplay.textContent
+    secondOperand = ""
   }
 }
 
 function appendNumber(number) {
   if (firstDisplay.textContent === '0' || shouldResetScreen) resetScreen()
   displayValue = firstDisplay.textContent += number
+  calculateChanges()
 }
 
 function appendOperator(operator) {
-  if (displayValue === '') return
-  if (displayValue === '' && operator === "=") return
-  if (displayValue.charAt(displayValue.length-1) === operatorData.values) {
-    displayValue.slice(0, -1)
-    displayValue = displayValue + operator
-  }
-  firstDisplay.textContent = displayValue + operator
+  if (displayValue === "") return
+  if (displayValue === "" && operator === "=") return
   currentOperation = operator
+  // if (displayValue.charAt(displayValue.length-1) === operatorData.values) {
+  //   displayValue.slice(0, -1)
+  //   displayValue = displayValue + operator
+  // }
+  if (firstDisplay.textContent.indexOf(operatorData) <= 1) {
+    displayValue = firstDisplay.textContent + currentOperation
+    firstDisplay.textContent = displayValue
+    calculateChanges()
+  } else {
+    if (firstOperand !== "" || firstOperand !== null) {
+      displayValue = firstOperand + operator
+      firstDisplay.textContent = displayValue
+      secondDisplay.textContent = ""
+    } else {
+      firstDisplay.textContent = displayValue + operator
+    }
+    calculateChanges()
+  }
 }
 
 function resetScreen() {
@@ -99,7 +131,7 @@ function calculate() {
   // secondDisplay.textContent = operate(currentOperation, firstOperand, secondOperand)
   // firstDisplay.textContent = `${firstOperand}${currentOperation}${secondOperand}`
   // currentOperation = null
-  currentCalculation = firstDisplay.textContent
+  // currentCalculation = firstDisplay.textContent
   if (currentCalculation !== null) {
     if  (currentOperation !== null) {
       firstOperand = currentCalculation.split(currentOperation)[0]
