@@ -88,11 +88,10 @@ function calculate() {
     return
   }
   secondOperand = secondDisplay.textContent
-  secondDisplay.textContent = operate(currentOperation, firstOperand, secondOperand)
+  secondDisplay.textContent = roundResult(operate(currentOperation, firstOperand, secondOperand))
   firstDisplay.textContent = `${firstOperand} ${currentOperation} ${secondOperand} =`
   currentOperation = null
 }
-
 
 function appendPoint() {
   if (shouldResetScreen) resetScreen()
@@ -100,6 +99,10 @@ function appendPoint() {
     secondDisplay.textContent = '0'
   if (secondDisplay.textContent.includes('.')) return
   secondDisplay.textContent += '.'
+}
+
+function roundResult(number) {
+  return Math.round(number * 1000) / 1000
 }
 
 function add(a, b) {
